@@ -1,9 +1,11 @@
+import { PaginationMovies } from "./components/PaginationMovies";
+
 export default function App() {
 
   return (
     <>
-      <header>
-        <h1>DevFlix</h1>
+      <header className="w-full">
+        <PaginationMovies />
       </header>
     </>
   )
