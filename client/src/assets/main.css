@@ -1,0 +1,93 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-background: #0b0a09;
+  --color-surface: #131110;
+  --color-surface-raised: #141210;
+  --color-primary: #ff6a00;
+  --color-primary-hover: #ff7e26;
+  --color-primary-soft: #ff8a3d;
+  --color-on-primary: #140a02;
+  --color-foreground: #f5f1ec;
+  --color-danger: #ff5c47;
+  --color-danger-soft: #ff8a7a;
+  --color-star: #ffb020;
+
+  --font-display: 'Sora', system-ui, sans-serif;
+  --font-body: 'Manrope', system-ui, sans-serif;
+
+  --animate-fade-up: fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade-in: fade-in 0.5s both;
+  --animate-wall-float: wall-float 46s ease-in-out infinite alternate;
+  --animate-hero-glow: hero-glow 7s ease-in-out infinite;
+  --animate-spinner: spin 0.7s linear infinite;
+  --animate-pulse-strong: pulse-strong 1.6s ease-in-out infinite;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes wall-float {
+    from {
+      transform: rotate(-8deg) scale(1.28) translateY(0);
+    }
+    to {
+      transform: rotate(-8deg) scale(1.28) translateY(-70px);
+    }
+  }
+  @keyframes hero-glow {
+    0%,
+    100% {
+      opacity: 0.75;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  @keyframes pulse-strong {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.06);
+    }
+  }
+}
+
+@layer base {
+  body {
+    margin: 0;
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::-webkit-scrollbar {
+    height: 0;
+    width: 0;
+  }
+
+  input {
+    outline: none;
+  }
+
+  input::placeholder {
+    color: rgb(245 241 236 / 0.35);
+  }
+}
