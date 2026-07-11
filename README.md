@@ -2,6 +2,34 @@
 
 Plataforma de streaming construída com **Vue 3 + Pinia + Tailwind** no frontend e **NestJS + Prisma + PostgreSQL** no backend, com catálogo alimentado pela API do [TMDB](https://developer.themoviedb.org/).
 
+## Demonstração
+
+![Demonstração do DevFlix](docs/demo.gif)
+
+> 🎬 Versão em vídeo: [docs/demo.mp4](docs/demo.mp4)
+
+## Telas
+
+| Login                                | Cadastro                                   |
+| ------------------------------------ | ------------------------------------------ |
+| ![Login](docs/screenshots/login.png) | ![Cadastro](docs/screenshots/register.png) |
+
+| Seleção de perfis                        | Editor de perfil                                         |
+| ---------------------------------------- | -------------------------------------------------------- |
+| ![Perfis](docs/screenshots/profiles.png) | ![Editor de perfil](docs/screenshots/profile-editor.png) |
+
+| Catálogo                               | Busca                                 |
+| -------------------------------------- | ------------------------------------- |
+| ![Catálogo](docs/screenshots/home.png) | ![Busca](docs/screenshots/search.png) |
+
+| Detalhe do título                                       | Player de trailer                      |
+| ------------------------------------------------------- | -------------------------------------- |
+| ![Detalhe do título](docs/screenshots/title-detail.png) | ![Player](docs/screenshots/player.png) |
+
+| Minha lista                                  | Configurações da conta                          |
+| -------------------------------------------- | ----------------------------------------------- |
+| ![Minha lista](docs/screenshots/my-list.png) | ![Configurações](docs/screenshots/settings.png) |
+
 ## Estrutura
 
 ```
