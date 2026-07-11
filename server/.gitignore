@@ -1,0 +1,8 @@
+# Build output
+dist
+
+# Generated Prisma client (recreated via `npm run prisma:generate` / postinstall)
+src/generated
+
+# Environment
+.env
