@@ -1,0 +1,142 @@
+generator client {
+  provider               = "prisma-client"
+  output                 = "../src/generated/prisma"
+  moduleFormat           = "cjs"
+  runtime                = "nodejs"
+  generatedFileExtension = "ts"
+  importFileExtension    = ""
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Plan {
+  BASIC
+  STANDARD
+  PREMIUM
+}
+
+enum VideoQuality {
+  HD
+  FULL_HD
+  UHD_4K
+}
+
+enum MediaType {
+  MOVIE
+  TV
+}
+
+model User {
+  id            String          @id @default(cuid())
+  name          String
+  email         String          @unique
+  passwordHash  String
+  plan          Plan            @default(PREMIUM)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  preferences   UserPreferences?
+  profiles      Profile[]
+  refreshTokens RefreshToken[]
+
+  @@map("users")
+}
+
+model UserPreferences {
+  id                   String       @id @default(cuid())
+  userId               String       @unique
+  autoplay             Boolean      @default(true)
+  previews             Boolean      @default(true)
+  subtitles            Boolean      @default(false)
+  releaseNotifications Boolean      @default(true)
+  videoQuality         VideoQuality @default(UHD_4K)
+  user                 User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_preferences")
+}
+
+model Profile {
+  id             String              @id @default(cuid())
+  userId         String
+  name           String
+  avatarHue      Int
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  user           User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  watchlistItems WatchlistItem[]
+  historyEntries WatchHistoryEntry[]
+
+  @@map("profiles")
+}
+
+model RefreshToken {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}
+
+model Title {
+  id             String              @id @default(cuid())
+  tmdbId         Int
+  mediaType      MediaType
+  name           String
+  overview       String              @default("")
+  posterPath     String?
+  backdropPath   String?
+  releaseYear    Int?
+  runtimeMinutes Int?
+  seasonCount    Int?
+  voteAverage    Decimal             @default(0) @db.Decimal(3, 1)
+  isAnimation    Boolean             @default(false)
+  syncedAt       DateTime            @default(now())
+  genres         Genre[]
+  watchlistItems WatchlistItem[]
+  historyEntries WatchHistoryEntry[]
+
+  @@unique([tmdbId, mediaType])
+  @@map("titles")
+}
+
+model Genre {
+  id     String  @id @default(cuid())
+  tmdbId Int     @unique
+  name   String
+  titles Title[]
+
+  @@map("genres")
+}
+
+model WatchlistItem {
+  id        String   @id @default(cuid())
+  profileId String
+  titleId   String
+  createdAt DateTime @default(now())
+  profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  title     Title    @relation(fields: [titleId], references: [id], onDelete: Cascade)
+
+  @@unique([profileId, titleId])
+  @@map("watchlist_items")
+}
+
+model WatchHistoryEntry {
+  id            String   @id @default(cuid())
+  profileId     String
+  titleId       String
+  seasonNumber  Int?
+  episodeNumber Int?
+  watchedAt     DateTime @default(now()) @updatedAt
+  profile       Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  title         Title    @relation(fields: [titleId], references: [id], onDelete: Cascade)
+
+  @@unique([profileId, titleId, seasonNumber, episodeNumber])
+  @@index([profileId, watchedAt])
+  @@map("watch_history_entries")
+}
