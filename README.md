@@ -1,42 +1,64 @@
-# dev-flix
+# DevFlix
 
-This template should help get you started developing with Vue 3 in Vite.
+Plataforma de streaming construída com **Vue 3 + Pinia + Tailwind** no frontend e **NestJS + Prisma + PostgreSQL** no backend, com catálogo alimentado pela API do [TMDB](https://developer.themoviedb.org/).
 
-## Recommended IDE Setup
+## Estrutura
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+```
+streaming/
+├─ client/   # Vue 3 + Vite + TypeScript + Pinia + Tailwind
+├─ server/   # NestJS + Prisma + PostgreSQL + JWT
+└─ docker-compose.yml
+```
 
-## Recommended Browser Setup
+## Funcionalidades
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+- Autenticação com JWT (access token + refresh token com rotação em cookie httpOnly)
+- Múltiplos perfis por conta (até 5), com avatar personalizável
+- Catálogo de filmes, séries e desenhos via TMDB (proxy no backend, chave nunca exposta)
+- Hero rotativo, linhas de catálogo, busca em tempo real
+- Detalhe do título com temporadas, episódios e títulos parecidos
+- Player de trailer (YouTube)
+- Minha lista e histórico de reprodução por perfil (persistidos no banco)
+- Configurações da conta: dados, plano, preferências de reprodução
 
-## Type Support for `.vue` Imports in TS
+## Requisitos
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+- Node.js >= 22.18
+- Docker Desktop (para o PostgreSQL)
+- Uma chave de API do TMDB ([como obter](https://developer.themoviedb.org/docs/getting-started))
 
-## Customize configuration
+## Como rodar
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+### 1. Banco de dados
 
-## Project Setup
+```bash
+docker compose up -d
+```
 
-```sh
+### 2. Backend
+
+```bash
+cd server
+cp .env.example .env
+# edite .env e preencha TMDB_API_TOKEN com o seu "API Read Access Token" do TMDB
 npm install
+npx prisma migrate dev
+npx prisma db seed
+npm run start:dev   # http://localhost:3000
 ```
 
-### Compile and Hot-Reload for Development
+### 3. Frontend
 
-```sh
-npm run dev
+```bash
+cd client
+npm install
+npm run dev         # http://localhost:5173
 ```
 
-### Type-Check, Compile and Minify for Production
+## Testes
 
-```sh
-npm run build
+```bash
+cd server && npm test
+cd client && npm test
 ```
